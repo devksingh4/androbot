@@ -1,0 +1,18 @@
+{
+  "name": "androbot",
+  "main": "index.js",
+  "author": "Dev Singh",
+  "version": "1.0.0",
+  "repository": "https://github.com/devksingh4/androbot",
+  "description": "DGFB ftw.",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "@discordjs/opus": "^0.3.3",
+    "discord-player": "^3.4.0",
+    "discord.js": "^12.5.1",
+    "ffmpeg-static": "^4.2.7",
+    "jsonfile": "^6.1.0"
+  }
+}
