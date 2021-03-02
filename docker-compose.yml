@@ -1,7 +1,7 @@
 version: '3'
 
 services:
-  keycloak-db:
+  androbot:
     image: devksingh4/androbot:latest
     restart: on-failure
     environment:
@@ -10,6 +10,3 @@ services:
       - ACTIVITY="<help"
     volumes:
       - saved/:/usr/src/app/commands/musics/saved/
-
-volumes:
-  pgdata:
