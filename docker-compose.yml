@@ -22,4 +22,4 @@ services:
       - PREFIX=?
       - ACTIVITY=?help
     volumes:
-      - ./saved/:/usr/src/app/commands/musics/saved/
+      - ./saved/:/usr/src/app/commands/music/saved
