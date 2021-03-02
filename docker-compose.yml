@@ -11,7 +11,7 @@ services:
     command: --interval 10 --http-api-metrics --http-api-token androbot --debug androbot
   androbot:
     image: devksingh4/androbot:latest
-    restart: on-failure
+    restart: always
     environment:
       - DISCORD_TOKEN
       - PREFIX=?
