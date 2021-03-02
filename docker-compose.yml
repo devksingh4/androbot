@@ -4,6 +4,10 @@ services:
   watchtower:
     container_name: watchtower
     image: containrrr/watchtower:latest
+    environment:
+      - WATCHTOWER_NOTIFICATIONS=slack
+      - WATCHTOWER_NOTIFICATION_SLACK_HOOK_URL="https://discord.com/api/webhooks/816433077383069737/s1xaLrwuwi0vqTKlhN1xPKhMMGzah6n7GoQocnmlcramrvygaPg2mqRnAqQmYpP8UanA/slack"
+
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
     ports:
