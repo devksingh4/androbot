@@ -14,7 +14,7 @@ services:
     restart: on-failure
     environment:
       - DISCORD_TOKEN
-      - PREFIX="?"
-      - ACTIVITY="<help"
+      - PREFIX=?
+      - ACTIVITY=?help
     volumes:
       - ./saved/:/usr/src/app/commands/musics/saved/
