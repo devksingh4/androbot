@@ -2,5 +2,3 @@
 node_modules/
 # user saves
 saved/
-# bot config
-config/bot.js
