@@ -14,6 +14,7 @@ services:
       - 8080:8080
     command: --interval 10 --http-api-metrics --http-api-token androbot --debug androbot
   androbot:
+    container_name: androbot
     image: devksingh4/androbot:latest
     restart: always
     environment:
