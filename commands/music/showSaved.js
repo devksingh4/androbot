@@ -17,6 +17,7 @@ module.exports = {
         } else {
             return message.channel.send(`${client.emotes.error} - You do not have any saved tracks!`)
         }
+        curr = curr.filter(x => x != null);
         let resp = `**${message.author.username}'s Saved Tracks**\n\n`
         let i = 1
         for (const track of curr) {

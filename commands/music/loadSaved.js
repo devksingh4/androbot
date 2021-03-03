@@ -17,13 +17,16 @@ module.exports = {
         const file = path.join(__dirname, `saved/${message.author.id}.json`)
         let curr;
         if (fs.existsSync(file)) {
-            curr = await jsonfile.readFile(file).catch(e => console.error(e))
+            curr = await jsonfile.readFile(file).catch(e => {console.error(e); return message.channel.send(`${client.emotes.error} - You do not have any saved tracks!`);})
+            message.channel.send(`Loading tracks...`)
         } else {
             return message.channel.send(`${client.emotes.error} - You do not have any saved tracks!`)
         }
+        curr = curr.filter(x => x != null);
         curr = curr.reverse();
         for (const track of curr) {
             client.player.play(message, track.url);
         }
+        return message.channel.send(`${client.emotes.success} - Loaded tracks!`)
     },
 };

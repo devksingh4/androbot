@@ -23,7 +23,8 @@ module.exports = {
         } catch {
             return message.channel.send(`${client.emotes.error} - Could not delete this track from your saved tracks!`)
         }
-        console.log(curr)
+        curr = curr.filter(x => x != null);
+          
         jsonfile.writeFile(file, curr).catch(error => {console.error(error); message.channel.send(`${client.emotes.error} - Could not delete this track from your saved tracks!`);})
         return message.channel.send(`${client.emotes.success} - **Track ${args[0]}** removed from your saved tracks!`)
     },
