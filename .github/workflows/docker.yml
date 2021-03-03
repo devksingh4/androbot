@@ -1,4 +1,4 @@
-name: 'ARM image builder'
+name: 'AMD64/ARM64 image builder'
 
 on:
     push:
@@ -29,7 +29,7 @@ jobs:
             name: Build dockerfile (with push)
             run: |
                 docker buildx build \
-                --platform=linux/arm64 \
+                --platform=linux/amd64,linux/arm64,linux/arm/v7 \
                 --output "type=image,push=true" \
                 --file ./Dockerfile . \
-                --tag devksingh4/androbot:armhf-latest
+                --tag devksingh4/androbot:latest
