@@ -1,6 +1,7 @@
 FROM node:latest
 WORKDIR /usr/src/app
 COPY package*.json ./
-RUN npm i --legacy-deps
+COPY yarn.lock ./
+RUN yarn
 COPY . .
-CMD [ "npm", "run", "start:prod" ]
+CMD [ "yarn", "run", "start:prod" ]
