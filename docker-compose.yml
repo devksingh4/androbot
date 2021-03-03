@@ -12,7 +12,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
     ports:
       - 8080:8080
-    command: --interval 10 androbot --notifications slack --notification-slack-hook-url https://discord.com/api/webhooks/816433077383069737/s1xaLrwuwi0vqTKlhN1xPKhMMGzah6n7GoQocnmlcramrvygaPg2mqRnAqQmYpP8UanA/slack
+    command: --interval 10 --notifications slack --notification-slack-hook-url https://discord.com/api/webhooks/816433077383069737/s1xaLrwuwi0vqTKlhN1xPKhMMGzah6n7GoQocnmlcramrvygaPg2mqRnAqQmYpP8UanA/slack
   androbot:
     container_name: androbot
     image: devksingh4/androbot:latest
