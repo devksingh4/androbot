@@ -22,11 +22,10 @@ module.exports = {
             return message.channel.send(`${client.emotes.error} - Position may not be greater than ${currQueue.length}!`);
         }
         try {
-            delete currQueue.tracks[paeseInt(arr[1]) - 1];
+            client.player.remove(message, parseInt(arr[1] - 1))
         } catch {
             return message.channel.send(`${client.emotes.error} - Could not remove track!`);
         }
-        client.player.queues.set(message.guild.id, currQueue)
         message.channel.send(`${client.emotes.success} - Track removed!`);
     },
 };
