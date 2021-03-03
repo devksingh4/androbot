@@ -1,4 +1,4 @@
-FROM node:lts
+FROM node:latest
 WORKDIR /usr/src/app
 RUN apt-get update && apt-get install ffmpeg -y
 COPY package*.json ./
