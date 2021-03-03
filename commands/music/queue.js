@@ -9,7 +9,7 @@ module.exports = {
 
         if (message.guild.me.voice.channel && message.member.voice.channel.id !== message.guild.me.voice.channel.id) return message.channel.send(`${client.emotes.error} - You are not in the same voice channel!`);
 
-        const queue = client.player.getQueue(message);
+        const queue = client.player.getQueue(message).shift(); // do not show currently playing track in queue
 
         if (!client.player.getQueue(message)) return message.channel.send(`${client.emotes.error} - No songs currently playing!`);
 
