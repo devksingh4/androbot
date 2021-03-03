@@ -5,7 +5,7 @@ on:
    branches: master
  
 jobs:
- registry-cache:
+  build-image:
    runs-on: ubuntu-latest
    steps:
      -
