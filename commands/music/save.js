@@ -8,10 +8,13 @@ module.exports = {
     utilisation: '{prefix}save [name/URL]',
 
     async execute(client, message, args) {
-        if (!args[0]) return message.channel.send(`${client.emotes.error} - Please indicate the title of a song !`);
+        if (!args[0]) return message.channel.send(`${client.emotes.error} - Please indicate the title of a song!`);
 
         const res = await client.player.search(args.join(" "))
         const firstTrack = res[0]
+        if (firstTrack == null) {
+            return message.channel.send(`${client.emotes.error} - Could not get track information!`)
+        }
         const file = path.join(__dirname, `saved/${message.author.id}.json`)
         if (fs.existsSync(file)) {
             const curr = await jsonfile.readFile(file).catch(e => console.error(e))

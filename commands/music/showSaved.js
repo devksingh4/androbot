@@ -17,11 +17,15 @@ module.exports = {
         } else {
             return message.channel.send(`${client.emotes.error} - You do not have any saved tracks!`)
         }
-        let resp = '**Saved Tracks**\n\n'
-        i = 1
+        let resp = `**${message.author.username}'s Saved Tracks**\n\n`
+        let i = 1
         for (const track of curr) {
-            resp += `${i}. **${track.title}** - ${track.channel.name}\n`
-            i+=1
+            try {
+                resp += `${i}. **${track.title}** - ${track.channel.name}\n`
+                i+=1
+            } catch {
+                
+            }
         }
         message.channel.send(resp)
     },
