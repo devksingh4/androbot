@@ -32,4 +32,4 @@ jobs:
                 --platform=linux/arm64 \
                 --output "type=image,push=true" \
                 --file ./Dockerfile . \
-                --tag $(echo "${DOCKER_USERNAME}" | tr '[:upper:]' '[:lower:]')/androbot:armhf-latest
+                --tag devksingh4/androbot:armhf-latest
