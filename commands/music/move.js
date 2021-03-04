@@ -28,7 +28,7 @@ module.exports = {
         if (!client.player.getQueue(message)) return message.channel.send(`${client.emotes.error} - No music currently playing!`);
 
         
-        let currQueue = client.player.getQueue(message).shift(); // do not show currently playing track in queue
+        let currQueue = client.player.getQueue(message); // do not show currently playing track in queue
         if (args[1] > currQueue.length || args[2] > currQueue.length) {
             return message.channel.send(`${client.emotes.error} - Old and new positions may not be greater than ${currQueue.length}!`);
         }
