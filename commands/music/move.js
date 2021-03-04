@@ -41,7 +41,7 @@ module.exports = {
         if (parseInt(args[1]) < 1 || parseInt(args[2]) < 1) {
             return message.channel.send(`${client.emotes.error} - Old and new positions may not be less than 1!`);
         }
-        if (parseInt(args[1]) < currQueue.length + 2|| parseInt(args[2]) < currQueue.tracks.length + 2) {
+        if (parseInt(args[1]) > currQueue.length + 2|| parseInt(args[2]) > currQueue.tracks.length + 2) {
             return message.channel.send(`${client.emotes.error} - Old and new positions may not be greater than ${currQueue.tracks.length}!`);
         }
         if (parseInt(args[1]) != currQueue.tracks.length) {
