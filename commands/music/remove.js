@@ -20,12 +20,14 @@ module.exports = {
 
         
         let currQueue = client.player.getQueue(message)
-        if (args[1] > currQueue.length) {
+        if (args[1] >= currQueue.length - 1) {
             return message.channel.send(`${client.emotes.error} - Position may not be greater than ${currQueue.length}!`);
         }
+        let arr = args
         try {
             arr.shift()
             for (const item of arr) {
+                console.log(item)
                 client.player.remove(message, parseInt(item) - 1)
             }
         } catch {
