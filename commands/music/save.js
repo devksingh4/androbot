@@ -9,7 +9,7 @@ module.exports = {
 
     async execute(client, message, args) {
         if (!args[0]) return message.channel.send(`${client.emotes.error} - Please indicate the title of a song!`);
-        const playlist = args[1] || "default"
+        const playlist = args.length > 1 ? args.pop() : "default";
         const res = await client.player.search(args.join(" "))
         const firstTrack = res[0]
         if (firstTrack == null) {
@@ -27,7 +27,7 @@ module.exports = {
             const curr = [firstTrack]
             jsonfile.writeFile(file, curr).catch(error => console.error(error))
         }
-        if ((message.guild.me.voice.channel && message.member.voice.channel.id == message.guild.me.voice.channel.id) && (message.member.voice.channel)) {
+        if ((message.guild.me.voice.channel && message.member.voice.channel.id == message.guild.me.voice.channel.id) && (message.member.voice.channel) && (playlist == "default")) {
             client.player.play(message, firstTrack.url)
         }
         message.channel.send(`${client.emotes.success} - **${firstTrack.title}** added to your saved tracks!`)

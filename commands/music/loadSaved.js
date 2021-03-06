@@ -14,7 +14,7 @@ module.exports = {
 
         if (message.guild.me.voice.channel && message.member.voice.channel.id !== message.guild.me.voice.channel.id) return message.channel.send(`${client.emotes.error} - You are not in the same voice channel!`);
 
-        const playlist = args[0] || "default"
+        const playlist = args.length > 0 ? args.pop() : "default";
         const file = path.join(__dirname, `saved/${message.author.id}-${playlist}.json`)
         let curr;
         if (fs.existsSync(file)) {

@@ -9,7 +9,7 @@ module.exports = {
     utilisation: '{prefix}showSaved',
 
     async execute(client, message, args) {
-        const playlist = args[0] || "default"
+        const playlist = args.length > 0 ? args.pop() : "default";
         const file = path.join(__dirname, `saved/${message.author.id}=${playlist}.json`)
         let curr;
         if (fs.existsSync(file)) {
