@@ -14,10 +14,11 @@ module.exports = {
 
         if (message.guild.me.voice.channel && message.member.voice.channel.id !== message.guild.me.voice.channel.id) return message.channel.send(`${client.emotes.error} - You are not in the same voice channel!`);
 
-        const file = path.join(__dirname, `saved/${message.author.id}.json`)
+        const playlist = args[0] || "default"
+        const file = path.join(__dirname, `saved/${message.author.id}-${playlist}.json`)
         let curr;
         if (fs.existsSync(file)) {
-            curr = await jsonfile.readFile(file).catch(e => {console.error(e); return message.channel.send(`${client.emotes.error} - You do not have any saved tracks!`);})
+            curr = await jsonfile.readFile(file).catch(e => {console.error(e); return message.channel.send(`${client.emotes.error} - You do not have any saved tracks in playlist ${playlist}!`);})
             message.channel.send(`Loading tracks...`)
         } else {
             return message.channel.send(`${client.emotes.error} - You do not have any saved tracks!`)

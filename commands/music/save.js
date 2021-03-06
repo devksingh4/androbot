@@ -9,13 +9,13 @@ module.exports = {
 
     async execute(client, message, args) {
         if (!args[0]) return message.channel.send(`${client.emotes.error} - Please indicate the title of a song!`);
-
+        const playlist = args[1] || "default"
         const res = await client.player.search(args.join(" "))
         const firstTrack = res[0]
         if (firstTrack == null) {
             return message.channel.send(`${client.emotes.error} - Could not get track information!`)
         }
-        const file = path.join(__dirname, `saved/${message.author.id}.json`)
+        const file = path.join(__dirname, `saved/${message.author.id}-${playlist}.json`)
         if (fs.existsSync(file)) {
             const curr = await jsonfile.readFile(file).catch(e => console.error(e))
             curr.push(firstTrack)

@@ -8,9 +8,9 @@ module.exports = {
     category: 'Music',
     utilisation: '{prefix}showSaved',
 
-    async execute(client, message) {
-
-        const file = path.join(__dirname, `saved/${message.author.id}.json`)
+    async execute(client, message, args) {
+        const playlist = args[0] || "default"
+        const file = path.join(__dirname, `saved/${message.author.id}=${playlist}.json`)
         let curr;
         if (fs.existsSync(file)) {
             curr = await jsonfile.readFile(file).catch(e => console.error(e))
@@ -18,7 +18,7 @@ module.exports = {
             return message.channel.send(`${client.emotes.error} - You do not have any saved tracks!`)
         }
         curr = curr.filter(x => x != null);
-        let resp = `**${message.author.username}'s Saved Tracks**\n\n`
+        let resp = playlist === "default" ? `**${message.author.username}'s Saved Tracks**\n\n` : `**${message.author.username}'s Saved Tracks**\n*Playlist: ${playlist}*\n\n`
         let i = 1
         for (const track of curr) {
             try {
