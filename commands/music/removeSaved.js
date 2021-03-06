@@ -1,7 +1,6 @@
 const jsonfile = require('jsonfile')
 const fs = require('fs')
 var path = require('path');
-const { Track } = require('discord-player');
 
 module.exports = {
     name: 'removeSaved',
@@ -10,8 +9,11 @@ module.exports = {
     utilisation: '{prefix}removeSaved [index]',
 
     async execute(client, message, args) {
-        console.log(args)
-        const file = path.join(__dirname, `saved/${message.author.id}.json`)
+        if (args[0] == undefined) {
+            return message.channel.send(`${client.emotes.error} - Please specify the index to delete!`)
+        }
+        const playlist = args.length > 1 ? args.pop() : "default";
+        const file = path.join(__dirname, `saved/${message.author.id}-${playlist}.json`)
         let curr;
         if (fs.existsSync(file)) {
             curr = await jsonfile.readFile(file).catch(e => console.error(e))
