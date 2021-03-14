@@ -5,6 +5,8 @@ module.exports = {
     utilisation: '{prefix}meme <number of memes = 1>',
 
     execute(client, message, args) {
-        message.channel.send(`${client.emotes.error} - Not yet implemented!`)
+        if(args.length > 0) {
+            message.channel.send(`!meme ${args[1]}`)
+        }
     },
 };
