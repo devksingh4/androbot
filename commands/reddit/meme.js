@@ -21,7 +21,7 @@ module.exports = {
                 posts.splice(index, 1);
             }
             selected = selected.map(post => {
-                return {title: post.title, url: post.url, author: {name: post.author}, fields: [{name: "Upvotes", value: post.ups, inline: true }, {name: "Downvotes", value: post.downs, inline: true }], image: {url: post.url}, timestamp: new Date()}
+                return {title: post.title, url: post.url, author: {name: post.author}, fields: [{name: "Upvotes", value: post.ups, inline: true }, {name: "Downvotes", value: post.downs, inline: true }], image: {url: post.url.replace('.gifv', '.gif')}, timestamp: new Date()}
             })
             for (const post of selected) {
                 message.channel.send({embed: post})
