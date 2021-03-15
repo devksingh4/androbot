@@ -24,7 +24,7 @@ module.exports = {
         async.parallel([
             (callback) => {
                 request(`https://www.reddit.com/r/memes/hot.json`, { json: true }, (err, res, body) => {
-                    if(err) { console.log(err); message.channel.send(`${client.emotes.error} - Could not get memes from Reddit!`); callback(true); return; }
+                    if(err) { console.log(err); callback(true); return; }
                     const json = body;
                     const posts = json.data.children.filter(this.postFilter).map(post => post.data);
                     callback(false, posts);
@@ -32,13 +32,14 @@ module.exports = {
             },
             (callback) => {
                 request(`https://www.reddit.com/r/memes/new.json`, { json: true }, (err, res, body) => {
-                    if(err) { console.log(err); message.channel.send(`${client.emotes.error} - Could not get memes from Reddit!`); callback(true); return; }
+                    if(err) { console.log(err); callback(true); return; }
                     const json = body;
                     const posts = json.data.children.filter(post => this.postFilter).map(post => post.data);
                     callback(false, posts);
                 })
             },
         ], (err, results) => {
+            if(err) { console.log(err); message.channel.send(`${client.emotes.error} - Could not get memes from Reddit!`); return; }
             let posts = []
             for (const result of results) {
                 posts = posts.concat(result)
