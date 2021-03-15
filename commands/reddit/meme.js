@@ -1,43 +1,49 @@
 const request = require('request');
-
+const async = require('async')
 module.exports = {
     name: 'meme',
     aliases: ['memes'],
     category: 'Reddit',
     utilisation: '{prefix}meme <number of memes = 1>',
     shuffle(array) {
-        var currentIndex = array.length, temporaryValue, randomIndex;
-      
-        // While there remain elements to shuffle...
-        while (0 !== currentIndex) {
-      
-          // Pick a remaining element...
-          randomIndex = Math.floor(Math.random() * currentIndex);
-          currentIndex -= 1;
-      
-          // And swap it with the current element.
-          temporaryValue = array[currentIndex];
-          array[currentIndex] = array[randomIndex];
-          array[randomIndex] = temporaryValue;
+        for (let i = array.length - 1; i > 0; i--) {
+            let j = Math.floor(Math.random() * (i + 1));
+            let temp = array[i];
+            array[i] = array[j];
+            array[j] = temp;
         }
-      
-        return array;
-      },      
+    },      
+    postFilter(post) {
+        return post.data.pinned == false && post.data.url_overriden_by_dest == undefined && post.data.is_video == false
+    },
     execute(client, message, args) {
         const numPosts = parseInt(Math.ceil(args[0])) || 1
         if (numPosts > 10 || numPosts < 1){
             return message.channel.send(`${client.emotes.error} - Please provide a reasonable number of memes!`);
         }
-        request(`https://www.reddit.com/r/memes/hot.json`, { json: true }, (err, res, body) => {
-            if (err) { return message.channel.send(`${client.emotes.error} - Could not get memes from Reddit!`) }
-            const json = body;
-            let posts = json.data.children.filter(post => post.data.pinned == false && post.data.url_overriden_by_dest == undefined && post.data.is_video == false).map(post => post.data);
-            request(`https://www.reddit.com/r/memes/rising.json`, { json: true }, (err, res, body) => { 
-                if (err) { return message.channel.send(`${client.emotes.error} - Could not get memes from Reddit!`) }
-                const json = body;
-                posts.concat(json.data.children.filter(post => post.data.pinned == false && post.data.url_overriden_by_dest == undefined && post.data.is_video == false).map(post => post.data));
-            })
-            posts = this.shuffle(posts)
+        async.parallel([
+            (callback) => {
+                request(`https://www.reddit.com/r/memes/hot.json`, { json: true }, (err, res, body) => {
+                    if(err) { console.log(err); message.channel.send(`${client.emotes.error} - Could not get memes from Reddit!`); callback(true); return; }
+                    const json = body;
+                    const posts = json.data.children.filter(this.postFilter).map(post => post.data);
+                    callback(false, posts);
+                })
+            },
+            (callback) => {
+                request(`https://www.reddit.com/r/memes/new.json`, { json: true }, (err, res, body) => {
+                    if(err) { console.log(err); message.channel.send(`${client.emotes.error} - Could not get memes from Reddit!`); callback(true); return; }
+                    const json = body;
+                    const posts = json.data.children.filter(post => this.postFilter).map(post => post.data);
+                    callback(false, posts);
+                })
+            },
+        ], (err, results) => {
+            let posts = []
+            for (const result of results) {
+                posts = posts.concat(result)
+            }
+            this.shuffle(posts)
             let selected = []
             for(i = 0; i < numPosts; i++) {
                 const index = Math.floor(Math.random() * posts.length);
@@ -50,6 +56,7 @@ module.exports = {
             for (const post of selected) {
                 message.channel.send({embed: post})
             }
-        });
+        })
+
     },
 };
