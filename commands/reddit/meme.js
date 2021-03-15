@@ -5,6 +5,24 @@ module.exports = {
     aliases: ['memes'],
     category: 'Reddit',
     utilisation: '{prefix}meme <number of memes = 1>',
+    shuffle(array) {
+        var currentIndex = array.length, temporaryValue, randomIndex;
+      
+        // While there remain elements to shuffle...
+        while (0 !== currentIndex) {
+      
+          // Pick a remaining element...
+          randomIndex = Math.floor(Math.random() * currentIndex);
+          currentIndex -= 1;
+      
+          // And swap it with the current element.
+          temporaryValue = array[currentIndex];
+          array[currentIndex] = array[randomIndex];
+          array[randomIndex] = temporaryValue;
+        }
+      
+        return array;
+      },      
     execute(client, message, args) {
         const numPosts = parseInt(Math.ceil(args[0])) || 1
         if (numPosts > 10 || numPosts < 1){
@@ -19,6 +37,7 @@ module.exports = {
                 const json = body;
                 posts.concat(json.data.children.filter(post => post.data.pinned == false && post.data.url_overriden_by_dest == undefined && post.data.is_video == false).map(post => post.data));
             })
+            posts = this.shuffle(posts)
             let selected = []
             for(i = 0; i < numPosts; i++) {
                 const index = Math.floor(Math.random() * posts.length);
