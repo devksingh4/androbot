@@ -12,7 +12,7 @@ module.exports = {
             array[i] = array[j];
             array[j] = temp;
         }
-    },      
+    },
     postFilter(post) {
         return post.data.pinned == false && post.data.url_overriden_by_dest == undefined && post.data.is_video == false
     },
@@ -21,48 +21,111 @@ module.exports = {
     },
     execute(client, message, args) {
         const numPosts = parseInt(Math.ceil(args[0])) || 1
-        if (numPosts > 10 || numPosts < 1){
+        if (numPosts > 10 || numPosts < 1) {
             return message.channel.send(`${client.emotes.error} - Please provide a reasonable number of memes!`);
         }
         async.parallel([
             (callback) => {
-                request(`https://www.reddit.com/r/memes/hot.json`, { json: true }, (err, res, body) => {
-                    if(err) { console.log(err); callback(true); return; }
+                request(`https://www.reddit.com/r/memes/hot.json`, {
+                    json: true
+                }, (err, res, body) => {
+                    if (err) {
+                        console.log(err);
+                        callback(true);
+                        return;
+                    }
                     const json = body;
                     const posts = json.data.children.filter(this.postFilter).map(this.postMap);
                     callback(false, posts);
                 })
             },
             (callback) => {
-                request(`https://www.reddit.com/r/memes/new.json`, { json: true }, (err, res, body) => {
-                    if(err) { console.log(err); callback(true); return; }
+                request(`https://www.reddit.com/r/memes/new.json`, {
+                    json: true
+                }, (err, res, body) => {
+                    if (err) {
+                        console.log(err);
+                        callback(true);
+                        return;
+                    }
                     const json = body;
                     const posts = json.data.children.filter(this.postFilter).map(this.postMap);
                     callback(false, posts);
                 })
             },
         ], (err, results) => {
-            if(err) { console.log(err); message.channel.send(`${client.emotes.error} - Could not get memes from Reddit!`); return; }
+            if (err) {
+                console.log(err);
+                message.channel.send(`${client.emotes.error} - Could not get memes from Reddit!`);
+                return;
+            }
             let posts = []
             for (const result of results) {
                 posts = posts.concat(result)
             }
             this.shuffle(posts)
             let selected = []
-            for(i = 0; i < numPosts; i++) {
+            for (i = 0; i < numPosts; i++) {
                 const index = Math.floor(Math.random() * posts.length);
                 selected.push(posts[index]);
                 posts.splice(index, 1);
             }
             selected = selected.map(post => {
-                if(post.domain == "v.redd.it") {
-                    return {title: post.title, description: "This post is a video. Click on the post title to view the full video.", url: post.url, author: {name: post.author}, fields: [{name: "Score", value: post.score, inline: true }, {name: "Awards Recieved", value: post.total_awards_received, inline: true }], image: {url: post.preview.images[0].source.url.replace('&amp;', '&')}, timestamp: new Date(post.created_utc * 1000)}
+                if (post.domain == "v.redd.it") {
+                    return {
+                        title: post.title,
+                        description: "This post is a video. Click on the post title to view the full video.",
+                        url: post.url,
+                        author: {
+                            name: post.author
+                        },
+                        fields: [{
+                            name: "Score",
+                            value: post.score,
+                            inline: true
+                        }, {
+                            name: "Awards Recieved",
+                            value: post.total_awards_received,
+                            inline: true
+                        }],
+                        image: {
+                            url: post.preview.images[0].source.url.replace('&amp;', '&')
+                        },
+                        footer: {
+                            text: 'Powered by Reddit',
+                        },
+                        timestamp: new Date(post.created_utc * 1000)
+                    }
                 } else {
-                    return {title: post.title, url: post.url, author: {name: post.author}, fields: [{name: "Score", value: post.score, inline: true }, {name: "Awards Recieved", value: post.total_awards_received, inline: true }], image: {url: post.url.replace('.gifv', '.gif')}, timestamp: new Date(post.created_utc * 1000)}
+                    return {
+                        title: post.title,
+                        url: post.url,
+                        author: {
+                            name: post.author
+                        },
+                        fields: [{
+                            name: "Score",
+                            value: post.score,
+                            inline: true
+                        }, {
+                            name: "Awards Recieved",
+                            value: post.total_awards_received,
+                            inline: true
+                        }],
+                        image: {
+                            url: post.url.replace('.gifv', '.gif')
+                        },
+                        footer: {
+                            text: 'Powered by Reddit',
+                        },
+                        timestamp: new Date(post.created_utc * 1000)
+                    }
                 }
             })
             for (const post of selected) {
-                message.channel.send({embed: post})
+                message.channel.send({
+                    embed: post
+                })
             }
         })
 
