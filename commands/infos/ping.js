@@ -1,3 +1,5 @@
+const os = require('os')
+
 module.exports = {
     name: 'ping',
     aliases: [],
@@ -5,6 +7,6 @@ module.exports = {
     utilisation: '{prefix}ping',
 
     execute(client, message) {
-        message.channel.send(`${client.emotes.success} - Ping : **${client.ws.ping}ms**!`);
+        message.channel.send(`${client.emotes.success} - Ping : **${client.ws.ping}ms** to **{os.hostname()}**!`);
     },
 };
