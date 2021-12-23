@@ -1,4 +1,4 @@
-const request = require('request');
+const axios = require('axios');
 const async = require('async')
 module.exports = {
     name: 'meme',
@@ -26,33 +26,25 @@ module.exports = {
         }
         async.parallel([
             (callback) => {
-                request(`https://www.reddit.com/r/memes/hot.json`, {
-                    json: true
-                }, (err, res, body) => {
-                    if (err) {
-                        console.log(err);
-                        callback(true);
-                        return;
-                    }
-                    const json = body;
+                axios.get(`https://www.reddit.com/r/memes/hot.json`).then(({data}) => {
+                    const json = data;
                     const posts = json.data.children.filter(this.postFilter).map(this.postMap);
                     callback(false, posts);
+                }).catch((err) => {
+                  console.log(err)
+                  callback(true)
                 })
             },
             (callback) => {
-                request(`https://www.reddit.com/r/memes/new.json`, {
-                    json: true
-                }, (err, res, body) => {
-                    if (err) {
-                        console.log(err);
-                        callback(true);
-                        return;
-                    }
-                    const json = body;
-                    const posts = json.data.children.filter(this.postFilter).map(this.postMap);
-                    callback(false, posts);
-                })
-            },
+              axios.get(`https://www.reddit.com/r/memes/hot.json`).then(({data}) => {
+                  const json = data;
+                  const posts = json.data.children.filter(this.postFilter).map(this.postMap);
+                  callback(false, posts);
+              }).catch((err) => {
+                console.log(err)
+                callback(true)
+              })
+          },
         ], (err, results) => {
             if (err) {
                 console.log(err);
