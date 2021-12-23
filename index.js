@@ -1,5 +1,6 @@
 const fs = require('fs');
 const discord = require('discord.js');
+require('dotenv').config()
 
 const client = new discord.Client({ disableMentions: 'everyone' });
 
