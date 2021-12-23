@@ -1,5 +1,5 @@
 module.exports = (client, message) => {
-    if (message.content.includes("no motivation")) {
+    if (message.content.toLowerCase().includes("no motivation")) {
         message.channel.send(`<@${message.author.id}> do your work or I will steal your kneecaps!`);
         return
     }
