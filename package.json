@@ -2,6 +2,7 @@
   "name": "androbot",
   "main": "index.js",
   "author": "Dev Singh",
+  "license": "GPL-3.0",
   "version": "1.0.0",
   "repository": "https://github.com/devksingh4/androbot",
   "description": "Multi-Purpose Discord Bot using discord.js",
