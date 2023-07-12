@@ -1,6 +1,6 @@
 module.exports = (client, message) => {
     if (message.content.toLowerCase().includes("no motivation")) {
-        message.channel.send(`<@${message.author.id}> do your work or I will steal your kneecaps!`);
+        message.channel.send(`<@${message.author.id}> do your work or I will steal your kneecaps, you lazy worthless piece of shit.`);
         return
     }
     if (message.author.bot || message.channel.type === 'dm') return;
